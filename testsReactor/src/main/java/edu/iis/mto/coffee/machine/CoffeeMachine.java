@@ -7,6 +7,7 @@ import edu.iis.mto.coffee.CoffeeReceipe;
 import edu.iis.mto.coffee.CoffeeReceipes;
 import edu.iis.mto.coffee.CoffeeSize;
 import edu.iis.mto.coffee.CoffeeType;
+import edu.iis.mto.coffee.Status;
 
 public class CoffeeMachine {
 
@@ -21,25 +22,28 @@ public class CoffeeMachine {
     }
 
     public Coffee make(CoffeeOrder order) {
+        Coffee coffee = new Coffee();
         if (isNull(receipes.getReceipe(order.getType()))) {
-            throw new CoffeeMachineException("unknown receipe for order " + order);
+            coffee.setStatus(Status.ERROR);
+            return coffee;
         }
-        grindCoffee(order.getSize());
-        Coffee coffee = create(order);
-        if (isMilkCoffee(order.getType())) {
-            addMilk(order, coffee);
+        try {
+            grindCoffee(order.getSize());
+            coffee = create(order);
+            if (isMilkCoffee(order.getType())) {
+                addMilk(order, coffee);
+            }
+        } catch (Exception e) {
+            coffee.setStatus(Status.ERROR);
         }
+        coffee.setStatus(Status.READY);
         return coffee;
     }
 
-    private void addMilk(CoffeeOrder order, Coffee coffee) {
+    private void addMilk(CoffeeOrder order, Coffee coffee) throws HeaterException {
         int milkAmount = receipes.getReceipe(order.getType())
                                  .getMilkAmount();
-        try {
-            milkProvider.heat();
-        } catch (Exception e) {
-            throw new CoffeeMachineException("milk provider error");
-        }
+        milkProvider.heat();
         int poured = milkProvider.pour(milkAmount);
         coffee.setMilkAmout(poured);
     }
