@@ -7,6 +7,7 @@ public class Coffee {
     private Status status;
     private int waterAmount;
     private int milkAmout;
+    private String message;
 
     public int getWaterAmount() {
         return waterAmount;
@@ -28,7 +29,16 @@ public class Coffee {
         return status;
     }
 
-    public void setStatus(Status status) {
+    void setStatus(Status status) {
         this.status = status;
     }
+
+    public String getMessage() {
+        return message;
+    }
+
+    void setMessage(String message) {
+        this.message = message;
+    }
+
 }

@@ -4,6 +4,6 @@ import edu.iis.mto.coffee.CoffeeSize;
 
 public interface CoffeeGrinder {
 
-    boolean grind(CoffeeSize size);
+    boolean grind(CoffeeSize size) throws GrinderException;
 
 }

@@ -35,6 +35,7 @@ public class CoffeeMachine {
             }
         } catch (Exception e) {
             coffee.setStatus(Status.ERROR);
+            coffee.setMessage(e.getMessage());
         }
         coffee.setStatus(Status.READY);
         return coffee;
@@ -53,7 +54,7 @@ public class CoffeeMachine {
                        .withMilk();
     }
 
-    private void grindCoffee(CoffeeSize coffeeSize) {
+    private void grindCoffee(CoffeeSize coffeeSize) throws GrinderException {
         if (!grinder.grind(coffeeSize)) {
             throw new CoffeeMachineException("no coffee beans available");
         }
